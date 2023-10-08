@@ -26,6 +26,10 @@ struct point
 	}
 };
 
+
+/*
+* Структура электрода
+*/
 struct electrodes
 {
 	point A;
@@ -37,6 +41,9 @@ struct electrodes
 	}
 };
 
+/*
+* Структура линии
+*/
 struct line
 {
 	point M;
@@ -117,7 +124,7 @@ int main()
 
 #pragma region Истинные значения
 
-	double properAmperage = 15; // Сила тока (I)
+	double properAmperage = 5; // Сила тока (I)
 	double properSigma = 2;  // Удельная электрическая проводимость
 
 #pragma endregion
@@ -139,7 +146,7 @@ int main()
 
 #pragma endregion
 
-	double amperage = 0;
+	double amperage = 5;
 	double sigma = properSigma;
 	double delta = 0.0;
 	double eps = 1e-7;
