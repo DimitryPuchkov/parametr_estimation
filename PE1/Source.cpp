@@ -124,7 +124,7 @@ int main()
 
 #pragma region Истинные значения
 
-	double properAmperage = 5; // Сила тока (I)
+	double properAmperage = 15; // Сила тока (I)
 	double properSigma = 2;  // Удельная электрическая проводимость
 
 #pragma endregion
@@ -146,7 +146,7 @@ int main()
 
 #pragma endregion
 
-	double amperage = 5;
+	double amperage = 0;
 	double sigma = properSigma;
 	double delta = 0.0;
 	double eps = 1e-7;
@@ -199,6 +199,6 @@ int main()
 
 		cout << iters << "\t" << amperage << "\t" << functional << endl;
 
-	} while (delta > eps);
+	} while (delta > eps && functional > eps);
 	return 0;
 }
