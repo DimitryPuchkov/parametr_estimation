@@ -5,35 +5,37 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 
+using dVector = System.Collections.Generic.List<double>;
+using iVector = System.Collections.Generic.List<int>;
+
 namespace ConsoleApp1
 {
     internal class SyntheticDataGenerator
     {
-        /// <summary>
-        /// sigma = 0.1
-        /// </summary>
-        public static (ForwardProblem, double[]) FirstTestFromTrainingManual()
+        public static (Forward, dVector) FirstTestFromTrainingManual()
         {
-            (double[], double[])[] sourcesCoor = new (double[], double[])[1];
-            double[] A = { 0, 0, 0 };
-            double[] B = { 100, 0, 0 };
+            // Источники
+            (dVector, dVector)[] sourcesCoor = new (dVector, dVector)[1];
+            dVector A = new dVector { 0, 0, 0 };
+            dVector B = new dVector { 100, 0, 0 };
             sourcesCoor[0] = (A, B);
 
-            (double[], double[])[] receiversCoor = new (double[], double[])[3];
-            double[] M1 = { 200, 0, 0 };
-            double[] N1 = { 300, 0, 0 };
-            double[] M2 = { 500, 0, 0 };
-            double[] N2 = { 600, 0, 0 };
-            double[] M3 = { 1000, 0, 0 };
-            double[] N3 = { 1100, 0, 0 };
+            // Приёмники
+            (dVector, dVector)[] receiversCoor = new (dVector, dVector)[3];
+            dVector M1 = new dVector{ 200, 0, 0 };
+            dVector N1 = new dVector { 300, 0, 0 };
+            dVector M2 = new dVector { 500, 0, 0 };
+            dVector N2 = new dVector { 600, 0, 0 };
+            dVector M3 = new dVector { 1000, 0, 0 };
+            dVector N3 = new dVector { 1100, 0, 0 };
             receiversCoor[0] = (N1, M1);
             receiversCoor[1] = (N2, M2);
             receiversCoor[2] = (N3, M3);
 
-            double[] I = new double[] { 1 };
+            dVector I = new dVector { 1 }; // Сила тока
             double sigma = 0.1;
 
-            ForwardProblem syntheticDataGenerator = new(sourcesCoor, receiversCoor, I, sigma, 3);
+            Forward syntheticDataGenerator = new(sourcesCoor, receiversCoor, I, sigma, 3);
 
             return (syntheticDataGenerator, syntheticDataGenerator.SolveForwardProblem());
         }

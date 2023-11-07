@@ -5,45 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 
+using dVector = System.Collections.Generic.List<double>;
+using iVector = System.Collections.Generic.List<int>;
+
+
 namespace ConsoleApp1
 {
     public class DenseSLAE
+        
     {
-        private double[][] _a;
-        public double[][] A
-        {
-            get => _a;
-            set
-            {
-                if (!DimensionGuarantor.IsDimensionsCoincideMatrixFull(value, MatrixDimension))
-                {
-                    throw new Exception("Размерность матрицы A не совпадает с размерностью СЛАУ");
-                }
-                _a = value;
-            }
-        }
+        public dVector[] A;
 
-        private double[] _b;
-        public double[] B
-        {
-            get => _b;
-            set
-            {
-                if (!DimensionGuarantor.IsDimensionsCoincide(value, MatrixDimension))
-                {
-                    throw new Exception("Размерность вектора b не совпадает с размерностью СЛАУ");
-                }
-                _b = value;
-            }
-        }
-        public int MatrixDimension { get; init; }
+        public dVector B;
 
-        /// <summary>
-        /// We will consider the number x as zero (for example, when solving SLAE by the Gauss method) if: -Near Zero < x < NearZero
-        /// </summary>
-        public double NearZero { get; set; } = 1e-14;
+        public int MatrixDimension;
+        public double NearZero = 1e-14;
 
-        public DenseSLAE(double[][] a, double[] b, int matrixDimension)
+        public DenseSLAE(dVector[] a, dVector b, int matrixDimension)
         {
             MatrixDimension = matrixDimension;
             A = a;
@@ -59,7 +37,7 @@ namespace ConsoleApp1
             return false;
         }
 
-        public double[] SolveSLAEGauss()
+        public dVector SolveSLAEGauss()
         {
             for (int i = 0; i < MatrixDimension; i++)
             {
@@ -88,7 +66,7 @@ namespace ConsoleApp1
                     B[j] -= B[i] * coef;
                 }
             }
-            double[] result = new double[MatrixDimension];
+            dVector result = new dVector(new double[MatrixDimension]);
             for (int i = MatrixDimension - 1; i >= 0; i--)
             {
                 double sum = 0;

@@ -5,15 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 
+using dVector = System.Collections.Generic.List<double>;
+using iVector = System.Collections.Generic.List<int>;
+
+
 namespace ConsoleApp1
 {
     internal class DimensionGuarantor
     {
-        public static bool IsDimensionsCoincideArrOfPairCoorsInside((double[], double[])[] coordinates, int dimension)
+        public static bool IsDimensionsCoincideArrOfPairCoorsInside((dVector, dVector)[] coordinates, int dimension)
         {
             foreach (var vectorPair in coordinates)
             {
-                if (vectorPair.Item1.Length != dimension || vectorPair.Item2.Length != dimension)
+                if (vectorPair.Item1.Count != dimension || vectorPair.Item2.Count != dimension)
                 {
                     return false;
                 }
@@ -21,34 +25,34 @@ namespace ConsoleApp1
             return true;
         }
 
-        public static bool IsDimensionsCoincideArrOfPairCoorsOutside((double[], double[])[] coordinates, double[] vector)
+        public static bool IsDimensionsCoincideArrOfPairCoorsOutside((dVector, dVector)[] coordinates, dVector vector)
         {
-            if (coordinates.Length != vector.Length)
+            if (coordinates.Length != vector.Count)
             {
                 return false;
             }
             return true;
         }
 
-        public static bool IsDimensionsCoincide(double[] vector, int dimension)
+        public static bool IsDimensionsCoincide(dVector vector, int dimension)
         {
-            if (vector.Length != dimension)
+            if (vector.Count != dimension)
             {
                 return false;
             }
             return true;
         }
 
-        public static bool IsDimensionsCoincide(int[] vector, int dimension)
+        public static bool IsDimensionsCoincide(iVector vector, int dimension)
         {
-            if (vector.Length != dimension)
+            if (vector.Count != dimension)
             {
                 return false;
             }
             return true;
         }
 
-        public static bool IsDimensionsCoincideMatrixFull(double[][] matrix, int dimension)
+        public static bool IsDimensionsCoincideMatrixFull(dVector[] matrix, int dimension)
         {
             if (matrix.Length != dimension)
             {
@@ -56,7 +60,7 @@ namespace ConsoleApp1
             }
             foreach (var str in matrix)
             {
-                if (str.Length != dimension)
+                if (str.Count != dimension)
                 {
                     return false;
                 }

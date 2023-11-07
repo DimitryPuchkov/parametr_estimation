@@ -5,6 +5,6 @@ public class Program
 {
     static void Main(string[] args)
     {
-        ForTest.CheckFirstTestFromTrainingManualPlus10Percent();
+        ForTest.CheckFirstTestFromTrainingManualBreaker();
     }
 }

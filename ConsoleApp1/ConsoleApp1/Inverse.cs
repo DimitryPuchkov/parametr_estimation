@@ -5,47 +5,32 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 
+using dVector = System.Collections.Generic.List<double>;
+using iVector = System.Collections.Generic.List<int>;
+
+
 namespace ConsoleApp1
 {
-    public class InverseProblem : ForwardProblem
+    public class Inverse : Forward
     {
-        private double[] _actualReceiversPotentialDiff;
-        public double[] ActualReceiversPotentialDiff
-        {
-            get => _actualReceiversPotentialDiff;
-            init
-            {
-                if (!DimensionGuarantor.IsDimensionsCoincideArrOfPairCoorsOutside(ReceiversСoor, value))
-                {
-                    throw new Exception("Размерность вектора разности потенциалов не совпадает с " +
-                                        "размерностью вектора координат приемников");
-                }
-                _actualReceiversPotentialDiff = value;
-            }
+        //private dVector _actualReceiversPotentialDiff;
+        public dVector ActualReceiversPotentialDiff;
 
-        }
-
-        //public double Sig
-
-        public InverseProblem((double[], double[])[] sourcesСoor, (double[], double[])[] receiversСoor, double[] sourcesCurrentStrength,
-                              double[] receiversPotentialDiff, double sigma, int problemDimension = 3) :
+        public Inverse((dVector, dVector)[] sourcesСoor, (dVector, dVector)[] receiversСoor, dVector sourcesCurrentStrength,
+                              dVector receiversPotentialDiff, double sigma, int problemDimension = 3) :
                               base(sourcesСoor, receiversСoor, sourcesCurrentStrength, sigma, problemDimension)
         {
             ActualReceiversPotentialDiff = receiversPotentialDiff;
         }
 
-        public InverseProblem(ForwardProblem forwardProblem, double sigma, double[] receiversPotentialDiff) :
+        public Inverse(Forward forwardProblem, double sigma, dVector receiversPotentialDiff) :
                               base(forwardProblem.SourcesСoor, forwardProblem.ReceiversСoor,
                               forwardProblem.SourcesCurrentStrength, sigma, forwardProblem.ProblemDimension)
         {
             ActualReceiversPotentialDiff = receiversPotentialDiff;
         }
 
-        /// <summary>
-        /// The difference between the theoretical output from the assumed data and 
-        /// the practical output from the real data
-        /// </summary>
-        protected double DeltaEP(int i)
+        public double DeltaEP(int i)
         {
             var hypotheticalValues = EP(ReceiversСoor[i]);
             var realValues = ActualReceiversPotentialDiff[i];
@@ -53,56 +38,39 @@ namespace ConsoleApp1
             return hypotheticalValues - realValues;
         }
 
-        /// <summary>
-        /// Calculates the analytical derivative with respect to sigma of the potential dif-ference for one receiver
-        /// </summary>
-        /// <param name="q"> For the index of the source by which we differentiate</param>
-        /// <param name="k"> For the receiver index</param>
-        protected double DEP(int q, int k)
+        public double DEP(int q, int k)
         {
             double forPotential1 = 1 / R(SourcesСoor[q].Item1, ReceiversСoor[k].Item1) - 1 / R(SourcesСoor[q].Item2, ReceiversСoor[k].Item1);
             double forPotential2 = 1 / R(SourcesСoor[q].Item1, ReceiversСoor[k].Item2) - 1 / R(SourcesСoor[q].Item2, ReceiversСoor[k].Item2);
             return -SourcesCurrentStrength[q] * (forPotential1 - forPotential2) / (2 * Math.PI * Sigma * Sigma);
         }
 
-        /// <summary>
-        /// Calculates coefficients for a weighted sum
-        /// </summary>
-        protected double W(int k)
+        public double W(int k)
         {
             return 1 / ActualReceiversPotentialDiff[k];
         }
 
-        /// <summary>
-        /// Calculates an element of the matrix to solve the inverse problem
-        /// </summary>
         public double AQS(int q, int s)
         {
             double sum = 0;
-            for (int i = 0; i < ActualReceiversPotentialDiff.Length; i++)
+            for (int i = 0; i < ActualReceiversPotentialDiff.Count; i++)
             {
                 sum += W(i) * W(i) * DEP(q, i) * DEP(s, i);
             }
             return sum;
         }
 
-        /// <summary>
-        /// Calculates an element of the right vector to solve the inverse problem
-        /// </summary>
         public double BQ(int q)
         {
             double sum = 0;
-            for (int i = 0; i < ActualReceiversPotentialDiff.Length; i++)
+            for (int i = 0; i < ActualReceiversPotentialDiff.Count; i++)
             {
                 sum -= W(i) * W(i) * DeltaEP(i) * DEP(q, i);
             }
             return sum;
         }
 
-        /// <summary>
-        /// Does one iteration to solve the inverse problem. Return delta sigma for new sigma
-        /// </summary>
-        public double[] Iter(DenseSLAE SLAE)
+        public dVector Iter(DenseSLAE SLAE)
         {
             for (int i = 0; i < 1; i++)
             {
@@ -120,22 +88,19 @@ namespace ConsoleApp1
             return SLAE.SolveSLAEGauss();
         }
 
-        /// <summary>
-        /// Without regularization, analytical derivatives, the matrix is solved by the Gauss method
-        /// </summary>
-        /// <param name="acc"> absolute accuracy of the solution </param>
-        /// <returns></returns>
         public double SolveInverseProblem(double acc, int maxIter)
         {
-            double[][] A = new double[1][];
+            //dVector a_ = new dVector(1);
+            dVector[] A = new dVector[100];
+            A[1] = new dVector(new double[1]);
             for (int i = 0; i < 1; i++)
             {
-                A[i] = new double[1];
+                A[i] = new dVector(new double[1]);
             }
-            double[] B = new double[1];
+            dVector B = new dVector(new double[1]);
             DenseSLAE SLAE = new(A, B, 1);
 
-            double[] errorVector = CalcErrorVector();
+            dVector errorVector = CalcErrorVector();
 
             for (int i = 0; i < maxIter && VectorAlgebra.Norm(errorVector) > acc; i++)
             {
@@ -146,10 +111,10 @@ namespace ConsoleApp1
             return Sigma;
         }
 
-        protected double[] CalcErrorVector()
+        public dVector CalcErrorVector()
         {
-            double[] errorVector = new double[ActualReceiversPotentialDiff.Length];
-            for (int i = 0; i < ActualReceiversPotentialDiff.Length; i++)
+            dVector errorVector = new dVector(new double[ActualReceiversPotentialDiff.Count]);
+            for (int i = 0; i < ActualReceiversPotentialDiff.Count; i++)
             {
                 errorVector[i] = EP(ReceiversСoor[i]);
             }
@@ -157,22 +122,18 @@ namespace ConsoleApp1
             return errorVector;
         }
 
-        /// <summary>
-        /// Without regularization, analytical derivatives, the matrix is solved by the Gauss method, with log
-        /// </summary>
-        /// <param name="acc"> absolute accuracy of the solution </param>
-        /// <returns></returns>
         public double SolveInverseProblemWithLog(double acc, int maxIter)
         {
-            double[][] A = new double[1][];
+            dVector[] A = new dVector[100];
+            A[1] = new dVector(new double[1]);
             for (int i = 0; i < 1; i++)
             {
-                A[i] = new double[1];
+                A[i] = new dVector(new double[1]);
             }
-            double[] B = new double[1];
+            dVector B = new dVector(new double[1]);
             DenseSLAE SLAE = new(A, B, 1);
 
-            double[] errorVector = CalcErrorVector();
+            dVector errorVector = CalcErrorVector();
 
             Console.Write("Изначальный: ");
             WriteLineSigma();

@@ -4,40 +4,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.Windows;
+
+using dVector = System.Collections.Generic.List<double>;
+using iVector = System.Collections.Generic.List<int>;
+
 
 namespace ConsoleApp1
 {
     public static class VectorAlgebra
     {
-        public static double[] Add(double[] x, double[] y)
+        public static dVector Add(dVector x, dVector y)
         {
-            if (x.Length != y.Length)
+            if (x.Count != y.Count)
             {
                 throw new Exception("При сложении векторов было обнаружено, что векторы разной размерности");
             }
-            double[] result = new double[x.Length];
-            for (int i = 0; i < x.Length; i++)
+            dVector result = new dVector(new double[x.Count]);
+            for (int i = 0; i < x.Count; i++)
             {
                 result[i] = x[i] + y[i];
             }
             return result;
         }
 
-        public static int[] Add(int[] x, int[] y)
+        public static iVector Add(iVector x, iVector y)
         {
-            if (x.Length != y.Length)
+            if (x.Count != y.Count)
             {
                 throw new Exception("При сложении векторов было обнаружено, что векторы разной размерности");
             }
-            int[] result = new int[x.Length];
-            for (int i = 0; i < x.Length; i++)
+            iVector result = new iVector(new int[x.Count]);
+            for (int i = 0; i < x.Count; i++)
             {
                 result[i] = x[i] + y[i];
             }
             return result;
         }
 
-        public static double Norm(int[] x)
+        public static double Norm(iVector x)
         {
             double sum = 0;
             foreach (var el in x)
@@ -47,7 +52,7 @@ namespace ConsoleApp1
             return Math.Sqrt(sum);
         }
 
-        public static double Norm(double[] x)
+        public static double Norm(dVector x)
         {
             double sum = 0;
             foreach (var el in x)
@@ -57,146 +62,146 @@ namespace ConsoleApp1
             return Math.Sqrt(sum);
         }
 
-        public static void AddToLeft(double[] x, double[] y)
+        public static void AddToLeft(dVector x, dVector y)
         {
-            if (x.Length != y.Length)
+            if (x.Count != y.Count)
             {
                 throw new Exception("При сложении векторов было обнаружено, что векторы разной размерности");
             }
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 x[i] += y[i];
             }
         }
 
-        public static void AddToLeft(int[] x, int[] y)
+        public static void AddToLeft(iVector x, iVector y)
         {
-            if (x.Length != y.Length)
+            if (x.Count != y.Count)
             {
                 throw new Exception("При сложении векторов было обнаружено, что векторы разной размерности");
             }
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 x[i] += y[i];
             }
         }
 
-        public static void AddToRight(double[] x, double[] y)
+        public static void AddToRight(dVector x, dVector y)
         {
-            if (x.Length != y.Length)
+            if (x.Count != y.Count)
             {
                 throw new Exception("При сложении векторов было обнаружено, что векторы разной размерности");
             }
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 y[i] += x[i];
             }
         }
 
-        public static void AddToRight(int[] x, int[] y)
+        public static void AddToRight(iVector x, iVector y)
         {
-            if (x.Length != y.Length)
+            if (x.Count != y.Count)
             {
                 throw new Exception("При сложении векторов было обнаружено, что векторы разной размерности");
             }
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 y[i] += x[i];
             }
         }
 
-        public static void Scale(double[] x, double k)
+        public static void Scale(dVector x, double k)
         {
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 x[i] *= k;
             }
         }
 
-        public static void Scale(int[] x, int k)
+        public static void Scale(iVector x, int k)
         {
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 x[i] *= k;
             }
         }
 
-        public static double[] CreateAndScale(double[] x, double k)
+        public static dVector CreateAndScale(dVector x, double k)
         {
-            double[] result = new double[x.Length];
-            for (int i = 0; i < x.Length; i++)
+            dVector result = new dVector(x.Count);
+            for (int i = 0; i < x.Count; i++)
             {
                 result[i] = x[i] * k;
             }
             return result;
         }
 
-        public static int[] CreateAndScale(int[] x, int k)
+        public static iVector CreateAndScale(iVector x, int k)
         {
-            int[] result = new int[x.Length];
-            for (int i = 0; i < x.Length; i++)
+            iVector result = new iVector(new int[x.Count]);
+            for (int i = 0; i < x.Count; i++)
             {
                 result[i] = x[i] * k;
             }
             return result;
         }
 
-        public static void SubtrFromLeft(double[] x, double[] y)
+        public static void SubtrFromLeft(dVector x, dVector y)
         {
-            if (x.Length != y.Length)
+            if (x.Count != y.Count)
             {
                 throw new Exception("При вычитании векторов было обнаружено, что векторы разной размерности");
             }
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 x[i] -= y[i];
             }
         }
 
-        public static void SubtrFromLeft(int[] x, int[] y)
+        public static void SubtrFromLeft(iVector x, iVector y)
         {
-            if (x.Length != y.Length)
+            if (x.Count != y.Count)
             {
                 throw new Exception("При вычитании векторов было обнаружено, что векторы разной размерности");
             }
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 x[i] -= y[i];
             }
         }
 
-        public static void SubtrFromRight(double[] x, double[] y)
+        public static void SubtrFromRight(dVector x, dVector y)
         {
-            if (x.Length != y.Length)
+            if (x.Count != y.Count)
             {
                 throw new Exception("При вычитании векторов было обнаружено, что векторы разной размерности");
             }
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 y[i] -= x[i];
             }
         }
 
-        public static void SubtrFromRight(int[] x, int[] y)
+        public static void SubtrFromRight(iVector x, iVector y)
         {
-            if (x.Length != y.Length)
+            if (x.Count != y.Count)
             {
                 throw new Exception("При вычитании векторов было обнаружено, что векторы разной размерности");
             }
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 y[i] -= x[i];
             }
         }
 
-        public static void Swap(double[] x, double[] y)
+        public static void Swap(dVector x, dVector y)
         {
             var tmp = x;
             x = y;
             y = tmp;
         }
 
-        public static void Swap(int[] x, int[] y)
+        public static void Swap(iVector x, iVector y)
         {
             var tmp = x;
             x = y;
