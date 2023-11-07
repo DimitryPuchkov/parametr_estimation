@@ -12,7 +12,7 @@ using iVector = System.Collections.Generic.List<int>;
 
 namespace ConsoleApp1
 {
-    public static class VectorAlgebra
+    public static class Algebra
     {
         public static dVector Add(dVector x, dVector y)
         {

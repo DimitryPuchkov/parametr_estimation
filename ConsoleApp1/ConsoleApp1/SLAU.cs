@@ -11,7 +11,7 @@ using iVector = System.Collections.Generic.List<int>;
 
 namespace ConsoleApp1
 {
-    public class DenseSLAE
+    public class SLAU
         
     {
         public dVector[] A;
@@ -21,7 +21,7 @@ namespace ConsoleApp1
         public int MatrixDimension;
         public double NearZero = 1e-14;
 
-        public DenseSLAE(dVector[] a, dVector b, int matrixDimension)
+        public SLAU(dVector[] a, dVector b, int matrixDimension)
         {
             MatrixDimension = matrixDimension;
             A = a;
@@ -50,7 +50,7 @@ namespace ConsoleApp1
                         {
                             continue;
                         }
-                        VectorAlgebra.Swap(A[j], A[i]);
+                        Algebra.Swap(A[j], A[i]);
                         foundStringForSwap = true;
                         break;
                     }
@@ -62,7 +62,7 @@ namespace ConsoleApp1
                 for (int j = i + 1; j < MatrixDimension; j++)
                 {
                     double coef = A[j][i] / A[i][i];
-                    VectorAlgebra.SubtrFromLeft(A[j], VectorAlgebra.CreateAndScale(A[i], coef));
+                    Algebra.SubtrFromLeft(A[j], Algebra.CreateAndScale(A[i], coef));
                     B[j] -= B[i] * coef;
                 }
             }

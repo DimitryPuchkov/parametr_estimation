@@ -11,19 +11,19 @@ using iVector = System.Collections.Generic.List<int>;
 
 namespace ConsoleApp1
 {
-    internal class ForTest
+    internal class Tests
     {
         /// <summary>
         /// 1 источник, 
         /// 3 приёмник, sigma = 0.1, 
         /// начальная апроксимация = 0.01,
-        /// точность = 1e-14, 
+        /// точность = 1e-10, 
         /// максимальное кол-во итераций = 1000
         /// </summary>
         public static void CheckFirstTestFromTrainingManual()
         {
             (Forward problemFromTrainingManual, dVector ReceiversPotentialDiff) =
-                                                        SyntheticDataGenerator.FirstTestFromTrainingManual();
+                                                        Data.FirstTestFromTrainingManual();
 
             double new_sigma = 0.01;
 
@@ -34,7 +34,7 @@ namespace ConsoleApp1
         public static void CheckFirstTestFromTrainingManualPlus10Percent()
         {
             (Forward problemFromTrainingManual, dVector ReceiversPotentialDiff) =
-                                                        SyntheticDataGenerator.FirstTestFromTrainingManual();
+                                                        Data.FirstTestFromTrainingManual();
 
             double new_sigma = 0.01;
 
@@ -50,7 +50,7 @@ namespace ConsoleApp1
         public static void CheckFirstTestFromTrainingManualMinus10Percent()
         {
             (Forward problemFromTrainingManual, dVector ReceiversPotentialDiff) =
-                                                        SyntheticDataGenerator.FirstTestFromTrainingManual();
+                                                        Data.FirstTestFromTrainingManual();
 
             double new_sigma = 0.01;
 
@@ -66,7 +66,7 @@ namespace ConsoleApp1
         public static void CheckFirstTestFromTrainingManualBreaker()
         {
             (Forward problemFromTrainingManual, dVector ReceiversPotentialDiff) =
-                                                        SyntheticDataGenerator.FirstTestFromTrainingManual();
+                                                        Data.FirstTestFromTrainingManual();
 
             double new_sigma = 0.01;
 

@@ -10,7 +10,7 @@ using iVector = System.Collections.Generic.List<int>;
 
 namespace ConsoleApp1
 {
-    internal class SyntheticDataGenerator
+    internal class Data
     {
         public static (Forward, dVector) FirstTestFromTrainingManual()
         {

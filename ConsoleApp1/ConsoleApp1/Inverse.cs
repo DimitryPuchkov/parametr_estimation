@@ -70,7 +70,7 @@ namespace ConsoleApp1
             return sum;
         }
 
-        public dVector Iter(DenseSLAE SLAE)
+        public dVector Iter(SLAU SLAE)
         {
             for (int i = 0; i < 1; i++)
             {
@@ -98,11 +98,11 @@ namespace ConsoleApp1
                 A[i] = new dVector(new double[1]);
             }
             dVector B = new dVector(new double[1]);
-            DenseSLAE SLAE = new(A, B, 1);
+            SLAU SLAE = new(A, B, 1);
 
             dVector errorVector = CalcErrorVector();
 
-            for (int i = 0; i < maxIter && VectorAlgebra.Norm(errorVector) > acc; i++)
+            for (int i = 0; i < maxIter && Algebra.Norm(errorVector) > acc; i++)
             {
                 Sigma += Iter(SLAE)[0];
                 errorVector = CalcErrorVector();
@@ -118,7 +118,7 @@ namespace ConsoleApp1
             {
                 errorVector[i] = EP(ReceiversСoor[i]);
             }
-            VectorAlgebra.SubtrFromLeft(errorVector, ActualReceiversPotentialDiff);
+            Algebra.SubtrFromLeft(errorVector, ActualReceiversPotentialDiff);
             return errorVector;
         }
 
@@ -131,14 +131,14 @@ namespace ConsoleApp1
                 A[i] = new dVector(new double[1]);
             }
             dVector B = new dVector(new double[1]);
-            DenseSLAE SLAE = new(A, B, 1);
+            SLAU SLAE = new(A, B, 1);
 
             dVector errorVector = CalcErrorVector();
 
             Console.Write("Изначальный: ");
             WriteLineSigma();
 
-            for (int i = 0; i < maxIter && VectorAlgebra.Norm(errorVector) > acc; i++)
+            for (int i = 0; i < maxIter && Algebra.Norm(errorVector) > acc; i++)
             {
                 Sigma += Iter(SLAE)[0];
                 Console.Write($"{i + 1} итерация: ");
