@@ -32,6 +32,7 @@ namespace ConsoleApp1
             SourcesCurrentStrength = sourcesCurrentStrength;
         }
 
+        // прямая задача
         public dVector SolveForwardProblem()
         {
             dVector receiversPotentialDifference = new dVector(new double[ReceiversСoor.Length]);
@@ -42,6 +43,7 @@ namespace ConsoleApp1
             return receiversPotentialDifference;
         }
 
+        // расстояние
         public double R(dVector a, dVector b)
         {
             double sum = 0;
@@ -51,7 +53,7 @@ namespace ConsoleApp1
             }
             return Math.Sqrt(sum);
         }
-
+        // разность потенциалов
         public double OneToOneEP((dVector, dVector) sourceCoor, (dVector, dVector) receiverCoor, double currentStrength)
         {
             double forPotential1 = 1 / R(sourceCoor.Item1, receiverCoor.Item1) - 1 / R(sourceCoor.Item2, receiverCoor.Item1);
@@ -59,6 +61,7 @@ namespace ConsoleApp1
             return (forPotential1 - forPotential2) * currentStrength / (2 * Math.PI * Sigma);
         }
 
+        // сложение разности потенциалов
         public double EP((dVector, dVector) receiverCoor)
         {
             double sum = 0;

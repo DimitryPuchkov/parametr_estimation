@@ -70,6 +70,7 @@ namespace ConsoleApp1
             return sum;
         }
 
+        // одна итерация
         public dVector Iter(SLAU SLAE)
         {
             for (int i = 0; i < 1; i++)
@@ -122,6 +123,7 @@ namespace ConsoleApp1
             return errorVector;
         }
 
+        // обратная задача
         public double SolveInverseProblemWithLog(double acc, int maxIter)
         {
             dVector[] A = new dVector[100];
